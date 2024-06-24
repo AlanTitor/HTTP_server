@@ -1,15 +1,19 @@
 #include"includes.h"
 
-#define PORT 2000
 #define BUFFER_SIZE 1024
 
 
 
 void handle_client(int client_socket);
-
+char *read_html_file(const char *filename);
 
 
 int main(){
+
+    printf("Enter the port number: ");
+    const UINT PORT;
+    scanf("%d", &PORT);
+    
 
     WSADATA wsadata;
     if(WSAStartup(MAKEWORD(2,2), &wsadata) != 0){perror("WSAStartup failed\n"); return 1;} //Инициализируем использование сокетов в Windows
@@ -35,6 +39,7 @@ int main(){
         WSACleanup();
         return 1;
     }
+
     printf("Server is listening on port %d\n", PORT);
 
     while(1){
@@ -49,22 +54,64 @@ int main(){
 }
 
 
+char *read_html_file(const char *filename){
+
+    FILE *file = fopen(filename, "r");//открываем HTML файл
+    if(file == NULL){
+        perror("Can't open file!");
+        fclose(file);
+        return NULL;
+    }
+
+    fseek(file, 0, SEEK_END);//Перемещаем указатель в конец файла для уточнения его размера
+    LONG file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);//Перемещаем указатель в файле обратно в начало
+
+    char *content = (char*)malloc(file_size + 1);//Выделяем память под контент страницы
+    if(content == NULL){
+        perror("Can't get memory!");
+        fclose(file);
+        free(content);
+        return NULL;
+    }
+
+    size_t bytes_read = fread(content, 1, file_size, file);
+    if(bytes_read != file_size){
+        perror("Can't read file!");
+        fclose(file);
+        free(content);
+        return NULL;
+    }
+
+    content[file_size] = '\0';
+    fclose(file);
+    return content;
+}
+
 void handle_client(int client_socket){
     char buffer[BUFFER_SIZE];
     int recived = recv(client_socket, buffer, BUFFER_SIZE - 1, 0); //Получает данные от клиента
-    if(recived < 0){perror("Accept failed\n"); return;}
+    if(recived < 0){perror("received failed\n"); return;}
 
     buffer[recived] = '\0';//Задаем конец строки в буфере
     printf("Recived request: \n%s\n", buffer);
 
-    char *http_responce = 
+    char *html_content = read_html_file("D:\\Projects\\C\\http_server\\src\\temp.html");//Получаем контент из функции
+    if(html_content == NULL){perror("Can't read content"); return;}
+
+
+    char http_response[BUFFER_SIZE]; //Задаем размер массива
+
+    snprintf(http_response, BUFFER_SIZE, 
         "HTTP/1.1 200 OK\r\n"
         "Content-Type: text/html\r\n"
-        "Content-Length: 44\r\n"
-        "Connection: close\r\n"
+        "Content-Length: %zu\r\n"
         "\r\n"
-        "<html><body><h1>It Works!</h1></body></html>";
+        "%s", 
+        strlen(html_content), html_content); 
+        
 
-    send(client_socket, http_responce, strlen(http_responce), 0);//отправляем данные через сокет клиенту
+    send(client_socket, http_response, strlen(http_response), 0);//отправляем данные через сокет клиенту
     closesocket(client_socket);
+    free(html_content);
 }

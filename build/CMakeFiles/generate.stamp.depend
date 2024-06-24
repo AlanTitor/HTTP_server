@@ -1,0 +1,25 @@
+# CMake generation dependency list for this directory.
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeCInformation.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeCXXInformation.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeGenericSystem.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeRCInformation.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Compiler/MSVC-C.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Compiler/MSVC-CXX.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Compiler/MSVC.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Platform/Windows-MSVC-C.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Platform/Windows-MSVC-CXX.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Platform/Windows-MSVC.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Platform/Windows.cmake
+D:/Programs/cmake/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake
+D:/Projects/C/http_server/CMakeLists.txt
+D:/Projects/C/http_server/build/CMakeFiles/3.30.0-rc3/CMakeCCompiler.cmake
+D:/Projects/C/http_server/build/CMakeFiles/3.30.0-rc3/CMakeCXXCompiler.cmake
+D:/Projects/C/http_server/build/CMakeFiles/3.30.0-rc3/CMakeRCCompiler.cmake
+D:/Projects/C/http_server/build/CMakeFiles/3.30.0-rc3/CMakeSystem.cmake

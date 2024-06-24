@@ -1,6 +1,5 @@
 #include"includes.h"
 
-#define PORT 2000
 #define BUFFER_SIZE 1024
 
 
@@ -10,6 +9,10 @@ void handle_client(int client_socket);
 
 
 int main(){
+
+    printf("Enter the port: ");
+    LONG PORT;
+    scanf("%d", PORT);
 
     WSADATA wsadata;
     if(WSAStartup(MAKEWORD(2,2), &wsadata) != 0){perror("WSAStartup failed\n"); return 1;} //Инициализируем использование сокетов в Windows

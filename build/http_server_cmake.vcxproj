@@ -325,6 +325,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D:\Projects\C\http_server\src\main.c" />
+    <ClInclude Include="D:\Projects\C\http_server\src\server.h" />
+    <ClCompile Include="D:\Projects\C\http_server\tests\tests.c" />
+    <ClInclude Include="D:\Projects\C\http_server\tests\tests.h" />
+    <ClInclude Include="D:\Projects\C\http_server\includes\includes.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\Projects\C\http_server\build\ZERO_CHECK.vcxproj">

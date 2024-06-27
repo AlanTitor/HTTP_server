@@ -39,7 +39,7 @@ int main(){
         if(client_socket < 0){SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);perror("Accept failed\n");SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);continue;}//если подключение установлено, то создается новый сокет
         handle_client(client_socket);
     }
-
+    closesocket(server_socket);
     return 0;
 }
 
@@ -82,7 +82,7 @@ char *read_html_file(const char *filename){
 
 void handle_client(SOCKET client_socket){
     char buffer[BUFFER_SIZE];
-    int recived = recv(client_socket, buffer, BUFFER_SIZE - 1, 0); //Получает данные от клиента
+    int recived = recv(client_socket, buffer, BUFFER_SIZE - 1, 0); //Получает запрос от клиента
     test_recive_error(recived);
 
     buffer[recived] = '\0';//Задаем конец строки в буфере
@@ -92,7 +92,7 @@ void handle_client(SOCKET client_socket){
         char *error_response = "HTTP/1.1 404 Not Found\r\n\r\n";
         send(client_socket, error_response, (int)strlen(error_response), 0);
     }
-    else if((strstr(buffer, "GET /") != 0)){
+    else if((strstr(buffer, "GET /") != 0)){//Обработка GET запросов
         char *html_content = read_html_file("D:\\Projects\\C\\http_server\\src\\temp.html");//Получаем контент из функции
         test_html_content_error(html_content);
 
@@ -119,7 +119,7 @@ void handle_client(SOCKET client_socket){
         free(html_content);
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);//Меняем цвет на белый
     }
-    else if(strstr(buffer, "POST /") != NULL){
+    else if(strstr(buffer, "POST /") != NULL){//Обработка POST запросов
         char *body = strstr(buffer, "\r\n\r\n");
         if(body != NULL){
             body += 4; //Пропускаем пустую строку
@@ -140,7 +140,7 @@ void handle_client(SOCKET client_socket){
         printf("Succsessfully sent POST data!\n");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);//Меняем цвет на белый
         printf("------------------------------------------------------------------------------------------------\n");
-        closesocket(client_socket);        
+        closesocket(client_socket);
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);//Меняем цвет на белый   
     }
 }

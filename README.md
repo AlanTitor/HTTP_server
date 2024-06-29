@@ -1,6 +1,6 @@
-<h1>WebSocket Server in C</h1>
+<h1>HTTP Server in C</h1>
 <h2>Описание</h2>
-<p>Этот проект представляет собой простой WebSocket-сервер, написанный на языке C. Сервер обрабатывает запросы GET и POST, отвечает с содержимым HTML-файлов и может выводить данные в консоль с различными цветами в зависимости от состояния работы.</p>
+<p>Этот проект представляет собой простой HTTP-сервер, написанный на языке C. Сервер обрабатывает запросы GET и POST, отвечает с содержимым HTML-файлов и может выводить данные в консоль с различными цветами в зависимости от состояния работы.</p>
 <h2>Требования</h2>
 <ul>
   <li>Windows</li>
@@ -14,10 +14,10 @@
 cd yourrepository</code></pre>
   </li>
   <li>Скомпилируйте проект:
-    <pre><code>gcc -o websocket_server server.c -lws2_32</code></pre>
+    <pre><code>gcc -Iincludes -Isrc -Itests includes/includes.h src/main.c src/server.h tests/tests.c tests/tests.h -o main -lws2_32</code></pre>
   </li>
   <li>Запустите сервер:
-    <pre><code>./websocket_server</code></pre>
+    <pre><code>./main</code></pre>
   </li>
 </ol>
 <h2>Использование</h2>

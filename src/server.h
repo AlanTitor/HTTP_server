@@ -7,9 +7,9 @@ void handle_client(SOCKET client_socket);
 char *read_html_file(const char *filename);
 
 int test_WSAStartup_error(WSADATA wsadata);
-int test_socket_error(int server_socket);
-int test_bind_error(int server_socket, struct sockaddr_in server_addr);
-int test_listen_error(int server_socket);
+int test_socket_error(SOCKET server_socket);
+int test_bind_error(SOCKET server_socket, struct sockaddr_in server_addr);
+int test_listen_error(SOCKET server_socket);
 
 char test_file_error(FILE *file);
 char test_content_error(char *content, FILE *file);

@@ -10,17 +10,19 @@ int test_WSAStartup_error(WSADATA wsadata){
     return 0;
 }
 
-int test_socket_error(int server_socket){
+int test_socket_error(SOCKET server_socket){
     if(server_socket == -1){
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);//Меняем цвет на красный
         perror("Couldn't create socket\n");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);//Меняем цвет на белый
+        closesocket(server_socket);
+        WSACleanup();
         return 1;}//Выдаем сам сокет (если вернет -1, то ошибка)
     return 0;
 }
 
-int test_bind_error(int server_socket, struct sockaddr_in server_addr){
-    if(bind(server_socket,(struct sockaddr *)&server_addr, sizeof(server_addr)) < 0){//Привязываем текущий сокет к нашим данным
+int test_bind_error(SOCKET server_socket, struct sockaddr_in server_addr){
+    if(bind(server_socket,(struct sockaddr *)&server_addr, sizeof(server_addr)) != 0){//Привязываем текущий сокет к нашим данным
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);//Меняем цвет на красный
         perror("Bind faild");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);//Меняем цвет на белый
@@ -31,8 +33,8 @@ int test_bind_error(int server_socket, struct sockaddr_in server_addr){
     return 0;
 }
 
-int test_listen_error(int server_socket){
-    if(listen(server_socket, 3) < 0){//начинаем слушать сокет
+int test_listen_error(SOCKET server_socket){
+    if(listen(server_socket, 3) < 0){//начинаем слушать порт
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);//Меняем цвет на красный
         perror("Listen failed");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);//Меняем цвет на белый

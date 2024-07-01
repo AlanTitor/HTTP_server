@@ -15,15 +15,15 @@ int main(){
     WSADATA wsadata = {0};
     test_WSAStartup_error(wsadata);
 
-    int server_socket = (int)socket(AF_INET, SOCK_STREAM, 0);
+    SOCKET server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);//IPv4/tcp протокол для сокета
     test_socket_error(server_socket);
 
-    struct sockaddr_in server_addr;//настраиваем структуру
-    server_addr.sin_family = AF_INET;//Указывает IPv4
-    server_addr.sin_addr.s_addr = INADDR_ANY;//Храним наш IP аддрес
-    server_addr.sin_port = htons(PORT);//Устанавливаем порт который будем слушать
+    struct sockaddr_in server_info;//настраиваем информацию о свервере
+    server_info.sin_family = AF_INET;//Указывает IPv4
+    server_info.sin_addr.s_addr = INADDR_ANY;//Храним наш IP аддрес
+    server_info.sin_port = htons(PORT);//Устанавливаем порт который будем слушать
 
-    test_bind_error(server_socket, server_addr);
+    test_bind_error(server_socket, server_info);//Привязываем сокет к адресу
     test_listen_error(server_socket);
     
 
@@ -36,10 +36,11 @@ int main(){
         struct sockaddr_in client_addr;//храним адресс и порт клиента
         int client_addr_len = sizeof(client_addr);
         SOCKET client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_addr_len);//Ожидает подключение к server_socket 
-        if(client_socket < 0){SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);perror("Accept failed\n");SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);continue;}//если подключение установлено, то создается новый сокет
+        if(client_socket == INVALID_SOCKET){SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);perror("Accept failed\n");SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);continue;}//если подключение установлено, то создается новый сокет
         handle_client(client_socket);
     }
     closesocket(server_socket);
+    WSACleanup();
     return 0;
 }
 
@@ -81,8 +82,8 @@ char *read_html_file(const char *filename){
 }
 
 void handle_client(SOCKET client_socket){
-    char buffer[BUFFER_SIZE];
-    int recived = recv(client_socket, buffer, BUFFER_SIZE - 1, 0); //Получает запрос от клиента
+    char buffer[BUFFER_SIZE];//Буфер приема и отправки информации
+    int recived = recv(client_socket, buffer, BUFFER_SIZE - 1, 0); //Получает информацию от сервера
     test_recive_error(recived);
 
     buffer[recived] = '\0';//Задаем конец строки в буфере
@@ -110,7 +111,7 @@ void handle_client(SOCKET client_socket){
             strlen(html_content), html_content); 
             
 
-        send(client_socket, http_response, (int)strlen(http_response), 0);//отправляем данные через сокет клиенту
+        send(client_socket, http_response, (int)strlen(http_response), 0);//отправляем информацию клиенту
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);//Меняем цвет на зеленный
         printf("Succsessfully sent GET data!\n");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);//Меняем цвет на белый
